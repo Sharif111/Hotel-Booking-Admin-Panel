@@ -12,14 +12,17 @@ use Illuminate\Queue\SerializesModels;
 class Websitemail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $subject,$body;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($subject,$body)
     {
+        $this->subject = $subject;
+        $this->body = $body;
         //
     }
 
@@ -55,5 +58,12 @@ class Websitemail extends Mailable
     public function attachments()
     {
         return [];
+    }
+
+    public function build()
+    {
+        return $this->view('email.email')->with([
+            'subject' => $this->subject
+        ]);
     }
 }
